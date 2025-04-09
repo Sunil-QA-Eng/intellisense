@@ -7,6 +7,7 @@ test.describe("Dashboard Tests", () => {
     const loginPage = new LoginPage(page);
     await loginPage.navigateToLoginPage();
     await loginPage.loginToApplication('qateam-auto+guest@intellisense.io', 'QateamIS@2025');
+    await page.waitForLoadState('networkidle');
   });
 
   test("Verify the project title is matching correctly", async ({ page }) => {

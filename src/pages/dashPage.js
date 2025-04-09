@@ -6,7 +6,6 @@ exports.DashPage = class DashPage {
         this.projectName = page.locator("//h3[@class='MuiTypography-root MuiTypography-h3 mui-1jri6bs']");
         this.menuButton = page.getByTestId('new-brains-menu-button');
         this.homeLink = page.getByRole('link', { name: 'Home' });
-        //this.notificationButton = page.getByTestId('BrainsAlerts-button');
         this.notificationButton = page.locator("(//span[@class='MuiChip-label MuiChip-labelSmall mui-1pjtbja'])[2]");
         this.notificationText = page.getByText('copy of test alert qa manual');
         this.supportButton = page.locator("//button[@aria-label='add']");
