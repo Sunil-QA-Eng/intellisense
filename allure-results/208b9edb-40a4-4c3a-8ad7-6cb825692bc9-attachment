@@ -1,0 +1,47 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify the Home link is visible
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:17:3
+
+# Error details
+
+```
+Error: expect(received).toBeTruthy()
+
+Received: false
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:20:22
+```
+
+# Test source
+
+```ts
+   1 | const { test, expect } = require("@playwright/test");
+   2 | const { LoginPage } = require("../pages/loginPage");
+   3 | const { DashPage } = require("../pages/dashPage");
+   4 |
+   5 | test.describe("Dashboard Tests", () => {
+   6 |   test.beforeEach(async ({ page }) => {
+   7 |     const loginPage = new LoginPage(page);
+   8 |     await loginPage.loginToApplication('qateam-auto+guest@intellisense.io', 'QateamIS@2025');
+   9 |   });
+  10 |
+  11 |   test("Verify the project title is matching correctly", async ({ page }) => {
+  12 |     const dashPage = new DashPage(page);
+  13 |     const projectText = await dashPage.getProjectNameText();
+  14 |     expect(projectText.trim()).toBe('QA Automation test Project');;
+  15 |   });
+  16 |
+  17 |   test("Verify the Home link is visible", async ({ page }) => {
+  18 |     const dashPage = new DashPage(page);
+  19 |     const homeLink = await dashPage.isHomeLinkVisible();
+> 20 |     expect(homeLink).toBeTruthy();
+     |                      ^ Error: expect(received).toBeTruthy()
+  21 |   });
+  22 | });
+```

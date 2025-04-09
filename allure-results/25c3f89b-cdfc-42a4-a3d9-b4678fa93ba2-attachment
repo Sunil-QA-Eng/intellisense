@@ -1,0 +1,58 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: test
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\test-1.spec.ts:3:5
+
+# Error details
+
+```
+Error: locator.check: Clicking the checkbox did not change its state
+Call log:
+  - waiting for getByRole('checkbox', { name: 'E-mail' })
+    - locator resolved to <input type="checkbox" class="PrivateSwitchBase-input MuiSwitch-input mui-1m9pwf3"/>
+  - attempting click action
+    - waiting for element to be visible, enabled and stable
+    - element is visible, enabled and stable
+    - scrolling into view if needed
+    - done scrolling
+    - performing click action
+    - click action done
+    - waiting for scheduled navigations to finish
+    - navigations have finished
+
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\test-1.spec.ts:15:56
+```
+
+# Test source
+
+```ts
+   1 | import { test, expect } from '@playwright/test';
+   2 |
+   3 | test('test', async ({ page }) => {
+   4 |   await page.goto('https://qa-test.intellisense.io/next/signin?ourl=%2Fnext%2Fdashboards%2Fg%2F2082%2FQA');
+   5 |   await page.getByRole('textbox', { name: 'Email address' }).click();
+   6 |   await page.getByRole('textbox', { name: 'Email address' }).fill('qateam-auto+guest@intellisense.io');
+   7 |   await page.getByRole('textbox', { name: 'Password' }).click();
+   8 |   await page.getByRole('textbox', { name: 'Password' }).fill('QateamIS@2025');
+   9 |   await page.getByTestId('SignInLocal-signInButton').click();
+  10 |   await page.getByTestId('BrainsAlerts-button').click();
+  11 |   await page.getByTestId('BrainsAlerts-menu').getByTestId('ActionToggleButton').click();
+  12 |   await expect(page.getByRole('heading', { name: 'copy of test alert qa manual' })).toBeVisible();
+  13 |   await page.getByRole('button', { name: 'close' }).click();
+  14 |   await page.getByTestId('BrainsAlerts-menu').getByTestId('ActionToggleButton').click();
+> 15 |   await page.getByRole('checkbox', { name: 'E-mail' }).check();
+     |                                                        ^ Error: locator.check: Clicking the checkbox did not change its state
+  16 |   await page.getByRole('checkbox', { name: 'E-mail' }).uncheck();
+  17 |   await page.getByRole('checkbox', { name: 'SMS' }).check();
+  18 |   await page.getByRole('checkbox', { name: 'SMS' }).uncheck();
+  19 |   await page.getByRole('checkbox', { name: 'WhatsApp' }).check();
+  20 |   await page.getByRole('checkbox', { name: 'WhatsApp' }).uncheck();
+  21 |   await page.getByRole('button', { name: 'close' }).click();
+  22 | });
+```

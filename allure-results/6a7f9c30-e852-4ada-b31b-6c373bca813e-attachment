@@ -1,0 +1,114 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify user is able to navigate to profile page successfully
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:36:3
+
+# Error details
+
+```
+Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+
+Locator: locator(':root')
+Expected pattern: /.*profile/
+Received string:  "https://qa-test.intellisense.io/next/dashboards/g/2082/QA"
+Call log:
+  - expect.toHaveURL with timeout 5000ms
+  - waiting for locator(':root')
+    - locator resolved to <html lang="en">…</html>
+    - unexpected value "https://qa-test.intellisense.io/next/dashboards/g/2082/QA"
+
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:39:24
+```
+
+# Page snapshot
+
+```yaml
+- button "Menu"
+- separator
+- heading "Profile" [level=3]
+- button "show 1 new notifications": Notifications 1
+- button "add"
+- link "qateam-auto+guest@intellisense.io"
+- navigation "breadcrumb":
+  - list:
+    - listitem:
+      - paragraph:
+        - link "Home"
+    - listitem:
+      - paragraph: Profile
+- text: Q Qa team qateam-auto+guest@intellisense.io
+- paragraph: "Site: REFERENCIA"
+- paragraph: "Phone number:"
+- paragraph: "Last Login: 19:36 09/04/2025"
+- button "Sign Out"
+- list:
+  - listitem:
+    - link "Change Password"
+  - listitem:
+    - link "My Files"
+  - listitem:
+    - button "Language"
+- alert: Profile | brains.app
+- tooltip "qateam-auto+guest@intellisense.io"
+```
+
+# Test source
+
+```ts
+   1 | const { test, expect } = require("@playwright/test");
+   2 | const { LoginPage } = require("../pages/loginPage");
+   3 | const { DashPage } = require("../pages/dashPage");
+   4 |
+   5 | test.describe("Dashboard Tests", () => {
+   6 |   test.beforeEach(async ({ page }) => {
+   7 |     const loginPage = new LoginPage(page);
+   8 |     await loginPage.navigateToLoginPage();
+   9 |     await loginPage.loginToApplication('qateam-auto+guest@intellisense.io', 'QateamIS@2025');
+  10 |   });
+  11 |
+  12 |   test("Verify the project title is matching correctly", async ({ page }) => {
+  13 |     const dashPage = new DashPage(page);
+  14 |     const projectText = await dashPage.getProjectNameText();
+  15 |     expect(projectText.trim()).toBe('QA Automation test Project');;
+  16 |   });
+  17 |
+  18 |   test("Verify the Home link is visible", async ({ page }) => {
+  19 |     const dashPage = new DashPage(page);
+  20 |     await dashPage.clickMenuButton();
+  21 |     await expect(dashPage.homeLink).toBeVisible();
+  22 |   });
+  23 |
+  24 |   test("Verify support popup is visible", async ({ page }) => {
+  25 |     const dashPage = new DashPage(page);
+  26 |     await dashPage.clickSupportButton();
+  27 |     await expect(dashPage.supportPopupCloseButton).toBeVisible;
+  28 |   });
+  29 |
+  30 |   test("Verify user is able to see Grafana annotations pop-up successfully", async ({ page }) => {  
+  31 |     const dashPage = new DashPage(page);
+  32 |     await dashPage.clickGrafanaButton();
+  33 |     await expect(dashPage.grafanaAnnotationsText).toBeVisible();
+  34 |   });
+  35 |
+  36 |   test("Verify user is able to navigate to profile page successfully", async ({ page }) => {  
+  37 |     const dashPage = new DashPage(page);
+  38 |     await dashPage.clickProfileIcon();
+> 39 |     await expect(page).toHaveURL(/.*profile/);
+     |                        ^ Error: Timed out 5000ms waiting for expect(locator).toHaveURL(expected)
+  40 |   });
+  41 |
+  42 |   test("Verify notification popup is visible", async ({ page }) => {
+  43 |     const dashPage = new DashPage(page);
+  44 |     await dashPage.clickNottificationButton();
+  45 |     const notificationText = await dashPage.getNotificationText();
+  46 |     expect(notificationText.trim()).toBe('copy of test alert qa manual hold');
+  47 |   });
+  48 |
+  49 | });
+```

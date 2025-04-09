@@ -1,0 +1,50 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify dashboard page title
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:10:5
+
+# Error details
+
+```
+Error: locator.fill: Target page, context or browser has been closed
+Call log:
+  - waiting for locator('//input[contains(@class,\'MuiInputBase-input MuiFilledInput-input\')]')
+
+    at LoginPage.loginToApplication (C:\Users\sunil\OneDrive\Desktop\Intellisense\src\pages\loginPage.js:12:27)
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:7:23
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require("@playwright/test");
+   2 |
+   3 | exports.LoginPage = class LoginPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.emailField = page.locator("//input[contains(@class,'MuiInputBase-input MuiFilledInput-input')]");
+   7 |     this.passwordField = page.locator("(//input[contains(@class,'MuiInputBase-input MuiFilledInput-input')])[2]");
+   8 |     this.loginButton = page.locator("//button[text()='Sign In']");
+   9 |   }
+  10 |
+  11 |   async loginToApplication(email, password) {
+> 12 |     await this.emailField.fill(email);
+     |                           ^ Error: locator.fill: Target page, context or browser has been closed
+  13 |     await this.passwordField.fill(password);
+  14 |     await this.loginButton.click();
+  15 |     await this.page.goto("https://qa-test.intellisense.io/next/dashboards/g/2082/QA");
+  16 |     await this.page.waitForTimeout(2000); // Wait for 2 seconds to ensure the login process is complete
+  17 |   }
+  18 |
+  19 |   async getUrl() {
+  20 |     const url = await this.page.url();
+  21 |     return url;
+  22 |   }
+  23 | };
+```

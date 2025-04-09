@@ -1,0 +1,74 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify support popup is visible
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:30:3
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: locator('//button[@class=\'MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc\']') resolved to 3 elements:
+    1) <button tabindex="0" type="button" aria-label="add" class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc">…</button> aka getByRole('button', { name: 'add' })
+    2) <button tabindex="0" type="button" variant="contained" data-testid="ActionToggleButton" class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc">…</button> aka getByTestId('ActionToggleButton').first()
+    3) <button tabindex="0" type="button" variant="contained" data-testid="ActionToggleButton" class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc">…</button> aka getByTestId('ActionToggleButton').nth(1)
+
+Call log:
+  - waiting for locator('//button[@class=\'MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc\']')
+
+    at DashPage.clickSupportButton (C:\Users\sunil\OneDrive\Desktop\Intellisense\src\pages\dashPage.js:36:34)
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:32:20
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require("@playwright/test");
+   2 |
+   3 | exports.DashPage = class DashPage {
+   4 |     constructor(page) {
+   5 |         this.page = page;
+   6 |
+   7 |         this.projectName = page.locator("//h3[@class='MuiTypography-root MuiTypography-h3 mui-1jri6bs']");
+   8 |         this.menuButton = page.getByTestId('new-brains-menu-button');
+   9 |         this.homeLink = page.getByRole('link', { name: 'Home' }); //is visible
+  10 |
+  11 |         this.notificationButton = page.getByTestId('BrainsAlerts-button');
+  12 |         this.notificationText = page.getByText('copy of test alert qa manual'); //is visible
+  13 |
+  14 |         this.supportButton = page.locator("//button[@class='MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc']");
+  15 |         this.supportPopup = page.locator("//div[@class='intercom-12bha25 e12mr2z27']");
+  16 |
+  17 |         this.user = page.locator("//a[@data-testid='BrainsAppScreenFrame-profileButton']");
+  18 |     }
+  19 |
+  20 |     async getProjectNameText() {
+  21 |         return await this.projectName.textContent();
+  22 |     }
+  23 |
+  24 |     async clickMenuButton() {
+  25 |         await this.menuButton.click();
+  26 |     }
+  27 |
+  28 |     async clickNottificationButton() {
+  29 |         await this.notificationButton.click();
+  30 |     }
+  31 |     async getNotificationText() {
+  32 |         return await this.notificationText.innerText();
+  33 |         
+  34 |     }
+  35 |     async clickSupportButton() {
+> 36 |         await this.supportButton.click();
+     |                                  ^ Error: locator.click: Error: strict mode violation: locator('//button[@class=\'MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc\']') resolved to 3 elements:
+  37 |     }
+  38 |     async isSupportPopupVisible() {
+  39 |         const isVisible = await this.supportPopup.isVisible();
+  40 |         return isVisible;
+  41 |     }
+  42 |
+  43 | };
+```

@@ -1,0 +1,76 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify user is able to see Grafana annotations pop-up successfully
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:37:3
+
+# Error details
+
+```
+Error: locator.click: Error: strict mode violation: getByTestId('ActionToggleButton') resolved to 2 elements:
+    1) <button tabindex="0" type="button" variant="contained" data-testid="ActionToggleButton" class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc">…</button> aka getByTestId('ActionToggleButton').first()
+    2) <button tabindex="0" type="button" variant="contained" data-testid="ActionToggleButton" class="MuiButtonBase-root MuiIconButton-root MuiIconButton-sizeSmall mui-1fkpgjc">…</button> aka getByTestId('ActionToggleButton').nth(1)
+
+Call log:
+  - waiting for getByTestId('ActionToggleButton')
+    - waiting for" https://qa-test.intellisense.io/next/dashboards/g/2082/QA" navigation to finish...
+    - navigated to "https://qa-test.intellisense.io/next/dashboards/g/2082/QA"
+
+    at DashPage.clickGrafanaButton (C:\Users\sunil\OneDrive\Desktop\Intellisense\src\pages\dashPage.js:42:34)
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:39:20
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require("@playwright/test");
+   2 |
+   3 | exports.DashPage = class DashPage {
+   4 |     constructor(page) {
+   5 |         this.page = page;
+   6 |         this.projectName = page.locator("//h3[@class='MuiTypography-root MuiTypography-h3 mui-1jri6bs']");
+   7 |         this.menuButton = page.getByTestId('new-brains-menu-button');
+   8 |         this.homeLink = page.getByRole('link', { name: 'Home' });
+   9 |         this.notificationButton = page.getByTestId('BrainsAlerts-button');
+  10 |         this.notificationText = page.getByText('copy of test alert qa manual');
+  11 |         this.supportButton = page.locator("//button[@aria-label='add']");
+  12 |         this.supportPopupCloseButton = page.locator('iframe[name="intercom-messenger-frame"]').contentFrame().getByRole('button', { name: 'Close' });
+  13 |         this.profileIcon = page.getByTestId("BrainsAppScreenFrame-profileButton");
+  14 |         this.grafanaButton = page.getByTestId('ActionToggleButton');
+  15 |         this.grafanaAnnotationsText = this.page.getByText('Grafana Annotations');
+  16 |     }
+  17 |
+  18 |     async getProjectNameText() {
+  19 |         return await this.projectName.textContent();
+  20 |     }
+  21 |
+  22 |     async clickMenuButton() {
+  23 |         await this.menuButton.click();
+  24 |     }
+  25 |
+  26 |     async clickNottificationButton() {
+  27 |         await this.notificationButton.click();
+  28 |     }
+  29 |     async getNotificationText() {
+  30 |         return await this.notificationText.innerText();
+  31 |
+  32 |     }
+  33 |     async clickSupportButton() {
+  34 |         await this.supportButton.click();
+  35 |     }
+  36 |
+  37 |     async clickProfileIcon() {
+  38 |         await this.profileIcon.click();
+  39 |     }
+  40 |
+  41 |     async clickGrafanaButton() {
+> 42 |         await this.grafanaButton.click();
+     |                                  ^ Error: locator.click: Error: strict mode violation: getByTestId('ActionToggleButton') resolved to 2 elements:
+  43 |     }
+  44 | };
+```

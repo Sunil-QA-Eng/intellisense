@@ -1,0 +1,54 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify dashboard page title
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:10:5
+
+# Error details
+
+```
+Error: locator.fill: Error: strict mode violation: locator('//input[contains(@class,\'MuiInputBase-input MuiFilledInput-input\')]') resolved to 2 elements:
+    1) <input value="" required="" type="email" aria-invalid="false" id=":R2ij7ulqjt9kq:" class="MuiInputBase-input MuiFilledInput-input mui-14frdwq"/> aka getByRole('textbox', { name: 'Email address' })
+    2) <input value="" required="" type="password" aria-invalid="false" id=":R6jj7ulqjt9kq:" class="MuiInputBase-input MuiFilledInput-input MuiInputBase-inputAdornedEnd mui-1kjchcx"/> aka getByRole('textbox', { name: 'Password' })
+
+Call log:
+  - waiting for locator('//input[contains(@class,\'MuiInputBase-input MuiFilledInput-input\')]')
+
+    at LoginPage.loginToApplication (C:\Users\sunil\OneDrive\Desktop\Intellisense\src\pages\loginPage.js:13:27)
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:7:7
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require("@playwright/test");
+   2 |
+   3 | exports.LoginPage = class LoginPage {
+   4 |   constructor(page) {
+   5 |     this.page = page;
+   6 |     this.emailField = page.locator("//input[contains(@class,'MuiInputBase-input MuiFilledInput-input')]");
+   7 |     this.passwordField = page.locator("(//input[contains(@class,'MuiInputBase-input MuiFilledInput-input')])[2]");
+   8 |     this.loginButton = page.locator("//button[text()='Sign In']");
+   9 |   }
+  10 |
+  11 |   async loginToApplication(email, password) {
+  12 |     await this.page.goto("https://qa-test.intellisense.io/next/dashboards/g/2082/QA");
+> 13 |     await this.emailField.fill(email);
+     |                           ^ Error: locator.fill: Error: strict mode violation: locator('//input[contains(@class,\'MuiInputBase-input MuiFilledInput-input\')]') resolved to 2 elements:
+  14 |     await this.passwordField.fill(password);
+  15 |     await this.loginButton.click();
+  16 |     await this.page.goto("https://qa-test.intellisense.io/next/dashboards/g/2082/QA");
+  17 |     await this.page.waitForTimeout(2000); // Wait for 2 seconds to ensure the login process is complete
+  18 |   }
+  19 |
+  20 |   async getUrl() {
+  21 |     const url = await this.page.url();
+  22 |     return url;
+  23 |   }
+  24 | };
+```

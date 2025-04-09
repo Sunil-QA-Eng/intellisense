@@ -1,0 +1,71 @@
+# Instructions
+
+- Following Playwright test failed.
+- Explain why, be concise, respect Playwright best practices.
+- Provide a snippet of code with the fix, if possible.
+
+# Test info
+
+- Name: Dashboard Tests >> Verify notification popup is visible
+- Location: C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:24:3
+
+# Error details
+
+```
+Error: locator.innerText: Test timeout of 90000ms exceeded.
+Call log:
+  - waiting for getByText('copy of test alert qa manual')
+
+    at DashPage.getNotificationText (C:\Users\sunil\OneDrive\Desktop\Intellisense\src\pages\dashPage.js:30:44)
+    at C:\Users\sunil\OneDrive\Desktop\Intellisense\src\tests\dash.spec.js:27:45
+```
+
+# Test source
+
+```ts
+   1 | const { expect } = require("@playwright/test");
+   2 |
+   3 | exports.DashPage = class DashPage {
+   4 |     constructor(page) {
+   5 |         this.page = page;
+   6 |         this.projectName = page.locator("//h3[@class='MuiTypography-root MuiTypography-h3 mui-1jri6bs']");
+   7 |         this.menuButton = page.getByTestId('new-brains-menu-button');
+   8 |         this.homeLink = page.getByRole('link', { name: 'Home' });
+   9 |         this.notificationButton = page.getByTestId('BrainsAlerts-button');
+  10 |         this.notificationText = page.getByText('copy of test alert qa manual');
+  11 |         this.supportButton = page.locator("//button[@aria-label='add']");
+  12 |         this.supportPopupCloseButton = page.locator('iframe[name="intercom-messenger-frame"]').contentFrame().getByRole('button', { name: 'Close' });
+  13 |         this.profileIcon = page.getByTestId("BrainsAppScreenFrame-profileButton");
+  14 |         this.grafanaButton = page.getByTestId('ActionToggleButton');
+  15 |         this.grafanaAnnotationsText = this.page.getByText('Grafana Annotations');
+  16 |     }
+  17 |
+  18 |     async getProjectNameText() {
+  19 |         return await this.projectName.textContent();
+  20 |     }
+  21 |
+  22 |     async clickMenuButton() {
+  23 |         await this.menuButton.click();
+  24 |     }
+  25 |
+  26 |     async clickNottificationButton() {
+  27 |         await this.notificationButton.click();
+  28 |     }
+  29 |     async getNotificationText() {
+> 30 |         return await this.notificationText.innerText();
+     |                                            ^ Error: locator.innerText: Test timeout of 90000ms exceeded.
+  31 |
+  32 |     }
+  33 |     async clickSupportButton() {
+  34 |         await this.supportButton.click();
+  35 |     }
+  36 |
+  37 |     async clickProfileIcon() {
+  38 |         await this.profileIcon.click();
+  39 |     }
+  40 |
+  41 |     async clickGrafanaButton() {
+  42 |         await this.grafanaButton.click();
+  43 |     }
+  44 | };
+```

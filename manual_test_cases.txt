@@ -1,0 +1,45 @@
+This are the manual test cases for dashboard functionality of application under test [https://qa-test.intellisense.io/next/dashboards/g/2082/qa-automation-test-project]
+
+Test Case 1: Verify the project title is matching correctly
+Steps:
+Login with valid credentials.
+Observe the project title at the top of the dashboard.
+Expected Result:
+Project title should be: "QA Automation test Project"
+
+Test Case 2: Verify the Home link is visible
+Steps:
+Login to the application.
+Click the menu/hamburger icon.
+Check for the visibility of the Home link.
+Expected Result:
+Home link should be visible and clickable.
+
+Test Case 3: Verify support popup is visible
+Steps:
+Login to the dashboard.
+Click the Support or help (?) button.
+Expected Result:
+A support popup appears with a Close (X) button.
+
+Test Case 4: Verify user sees Grafana Annotations pop-up
+Steps:
+Login successfully.
+Click the first Action Toggle Button on the toolbar.
+Expected Result:
+A pop-up with "Grafana Annotations" should be visible.
+
+Test Case 5: Verify navigation to profile page
+Steps:
+Log into the app.
+Click the user profile icon at the top-right.
+Expected Result:
+You should be redirected to a URL ending in /profile.
+
+Test Case 6: Verify notification popup is visible
+Steps:
+Login to the app.
+Click the notification bell icon.
+Read the visible notification message.
+Expected Result:
+The message should say: "copy of test alert qa manual hold"
